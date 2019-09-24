@@ -5,6 +5,7 @@
 
     <transfer name="ProductAbstract">
         <property name="allowedQuantity" type="AllowedProductQuantity"/>
+        <property name="idProductAbstract" type="int" />
     </transfer>
 
     <transfer name="AllowedProductQuantity">

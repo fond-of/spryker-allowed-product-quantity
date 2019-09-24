@@ -23,7 +23,7 @@ class AllowedQuantityProductAbstractAfterCreatePlugin extends AbstractPlugin imp
      *
      * @return \Generated\Shared\Transfer\ProductAbstractTransfer
      */
-    public function create(ProductAbstractTransfer $productAbstractTransfer)
+    public function create(ProductAbstractTransfer $productAbstractTransfer): ProductAbstractTransfer
     {
         return $this->getFacade()->persistProductAbstractAllowedQuantity($productAbstractTransfer);
     }
