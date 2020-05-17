@@ -13,8 +13,6 @@ class AllowedProductQuantityRepository extends AbstractRepository implements All
     /**
      * @param int $idProductAbstract
      *
-     * @throws
-     *
      * @return \Generated\Shared\Transfer\AllowedProductQuantityTransfer|null
      */
     public function findByIdProductAbstract(int $idProductAbstract): ?AllowedProductQuantityTransfer

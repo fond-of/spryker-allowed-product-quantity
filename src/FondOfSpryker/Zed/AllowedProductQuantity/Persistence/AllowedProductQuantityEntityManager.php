@@ -11,13 +11,11 @@ use Spryker\Zed\Kernel\Persistence\AbstractEntityManager;
 class AllowedProductQuantityEntityManager extends AbstractEntityManager implements AllowedProductQuantityEntityManagerInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param \Generated\Shared\Transfer\AllowedProductQuantityTransfer $allowedProductQuantityTransfer
      *
      * @return \Generated\Shared\Transfer\AllowedProductQuantityTransfer
-     *
-     * @throws
      */
     public function persist(AllowedProductQuantityTransfer $allowedProductQuantityTransfer): AllowedProductQuantityTransfer
     {
@@ -41,11 +39,9 @@ class AllowedProductQuantityEntityManager extends AbstractEntityManager implemen
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param int $idAllowedProductQuantity
-     *
-     * @throws
      *
      * @return void
      */

@@ -27,8 +27,6 @@ interface AllowedProductQuantityEntityManagerInterface
      *
      * @param int $idAllowedProductQuantity
      *
-     * @throws
-     *
      * @return void
      */
     public function deleteById(int $idAllowedProductQuantity): void;
