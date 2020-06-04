@@ -13,7 +13,7 @@ use Spryker\Zed\Product\Dependency\Plugin\ProductAbstractPluginUpdateInterface;
 class AllowedQuantityProductAbstractAfterUpdatePlugin extends AbstractPlugin implements ProductAbstractPluginUpdateInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

@@ -13,7 +13,7 @@ use Spryker\Zed\Product\Dependency\Plugin\ProductAbstractPluginCreateInterface;
 class AllowedQuantityProductAbstractAfterCreatePlugin extends AbstractPlugin implements ProductAbstractPluginCreateInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

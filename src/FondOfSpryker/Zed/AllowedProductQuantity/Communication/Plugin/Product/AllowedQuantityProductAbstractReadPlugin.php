@@ -13,7 +13,7 @@ use Spryker\Zed\Product\Dependency\Plugin\ProductAbstractPluginReadInterface;
 class AllowedQuantityProductAbstractReadPlugin extends AbstractPlugin implements ProductAbstractPluginReadInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
