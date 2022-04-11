@@ -20,7 +20,7 @@ class AllowedProductQuantityMapper implements AllowedProductQuantityMapperInterf
         $fosAllowedProductQuantity->fromArray($allowedProductQuantityTransfer->toArray(false));
 
         return $fosAllowedProductQuantity->setFkProductAbstract(
-            $allowedProductQuantityTransfer->getIdProductAbstract()
+            $allowedProductQuantityTransfer->getIdProductAbstract(),
         );
     }
 
@@ -37,7 +37,7 @@ class AllowedProductQuantityMapper implements AllowedProductQuantityMapperInterf
         $allowedProductQuantityTransfer->fromArray($fosAllowedProductQuantity->toArray(), true);
 
         $allowedProductQuantityTransfer->setIdProductAbstract(
-            $fosAllowedProductQuantity->getFkProductAbstract()
+            $fosAllowedProductQuantity->getFkProductAbstract(),
         );
 
         return $allowedProductQuantityTransfer;

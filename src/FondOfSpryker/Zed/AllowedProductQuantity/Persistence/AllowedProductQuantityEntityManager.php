@@ -32,7 +32,7 @@ class AllowedProductQuantityEntityManager extends AbstractEntityManager implemen
         $fosAllowedProductQuantity->save();
 
         $allowedProductQuantityTransfer->setIdAllowedProductQuantity(
-            $fosAllowedProductQuantity->getIdAllowedProductQuantity()
+            $fosAllowedProductQuantity->getIdAllowedProductQuantity(),
         );
 
         return $allowedProductQuantityTransfer;
