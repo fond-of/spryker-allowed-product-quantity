@@ -33,7 +33,7 @@ class AllowedQuantityProductAbstractReadPlugin extends AbstractPlugin implements
         }
 
         return $productAbstractTransfer->setAllowedQuantity(
-            $allowedProductQuantityResponseTransfer->getAllowedProductQuantityTransfer()
+            $allowedProductQuantityResponseTransfer->getAllowedProductQuantityTransfer(),
         );
     }
 }
