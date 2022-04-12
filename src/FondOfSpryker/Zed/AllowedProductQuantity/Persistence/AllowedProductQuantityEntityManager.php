@@ -45,13 +45,13 @@ class AllowedProductQuantityEntityManager extends AbstractEntityManager implemen
      */
     public function deleteAllowedProductQuantityById(int $idAllowedProductQuantity): void
     {
-        $entities = $this->getFactory()
+        $entity = $this->getFactory()
             ->createAllowedProductQuantityQuery()
             ->clear()
             ->filterByIdAllowedProductQuantity($idAllowedProductQuantity)
-            ->find();
+            ->findOne();
 
-        foreach ($entities as $entity) {
+        if ($entity !== null) {
             $entity->delete();
         }
     }
