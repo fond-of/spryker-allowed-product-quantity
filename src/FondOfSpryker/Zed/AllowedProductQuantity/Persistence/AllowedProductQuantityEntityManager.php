@@ -17,25 +17,23 @@ class AllowedProductQuantityEntityManager extends AbstractEntityManager implemen
      *
      * @return \Generated\Shared\Transfer\AllowedProductQuantityTransfer
      */
-    public function persist(AllowedProductQuantityTransfer $allowedProductQuantityTransfer): AllowedProductQuantityTransfer
+    public function persistAllowedProductQuantity(AllowedProductQuantityTransfer $allowedProductQuantityTransfer): AllowedProductQuantityTransfer
     {
-        $fosAllowedProductQuantityQuery = $this->getFactory()->createAllowedProductQuantityQuery();
+        $query = $this->getFactory()
+            ->createAllowedProductQuantityQuery()
+            ->clear();
 
-        $fosAllowedProductQuantity = $fosAllowedProductQuantityQuery
+        $entity = $query
             ->filterByIdAllowedProductQuantity($allowedProductQuantityTransfer->getIdAllowedProductQuantity())
-            ->findOneOrCreate();
+            ->findOneOrCreate()
+            ->fromArray($allowedProductQuantityTransfer->modifiedToArray())
+            ->setFkProductAbstract($allowedProductQuantityTransfer->getIdProductAbstract());
 
-        $fosAllowedProductQuantity = $this->getFactory()
-            ->createPropelAllowedProductQuantityMapper()
-            ->mapTransferToEntity($allowedProductQuantityTransfer, $fosAllowedProductQuantity);
+        $entity->save();
 
-        $fosAllowedProductQuantity->save();
-
-        $allowedProductQuantityTransfer->setIdAllowedProductQuantity(
-            $fosAllowedProductQuantity->getIdAllowedProductQuantity(),
-        );
-
-        return $allowedProductQuantityTransfer;
+        return $this->getFactory()
+            ->createAllowedProductQuantityMapper()
+            ->mapEntityToTransfer($entity);
     }
 
     /**
@@ -45,11 +43,16 @@ class AllowedProductQuantityEntityManager extends AbstractEntityManager implemen
      *
      * @return void
      */
-    public function deleteById(int $idAllowedProductQuantity): void
+    public function deleteAllowedProductQuantityById(int $idAllowedProductQuantity): void
     {
-        $this->getFactory()
+        $entities = $this->getFactory()
             ->createAllowedProductQuantityQuery()
+            ->clear()
             ->filterByIdAllowedProductQuantity($idAllowedProductQuantity)
-            ->delete();
+            ->find();
+
+        foreach ($entities as $entity) {
+            $entity->delete();
+        }
     }
 }

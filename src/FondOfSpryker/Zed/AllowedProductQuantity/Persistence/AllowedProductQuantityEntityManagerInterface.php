@@ -16,7 +16,7 @@ interface AllowedProductQuantityEntityManagerInterface
      *
      * @return \Generated\Shared\Transfer\AllowedProductQuantityTransfer
      */
-    public function persist(
+    public function persistAllowedProductQuantity(
         AllowedProductQuantityTransfer $allowedProductQuantityTransfer
     ): AllowedProductQuantityTransfer;
 
@@ -29,5 +29,5 @@ interface AllowedProductQuantityEntityManagerInterface
      *
      * @return void
      */
-    public function deleteById(int $idAllowedProductQuantity): void;
+    public function deleteAllowedProductQuantityById(int $idAllowedProductQuantity): void;
 }

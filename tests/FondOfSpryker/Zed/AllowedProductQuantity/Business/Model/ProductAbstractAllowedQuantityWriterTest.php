@@ -10,14 +10,9 @@ use Generated\Shared\Transfer\ProductAbstractTransfer;
 class ProductAbstractAllowedQuantityWriterTest extends Unit
 {
     /**
-     * @var \FondOfSpryker\Zed\AllowedProductQuantity\Business\Model\ProductAbstractAllowedQuantityWriter
-     */
-    protected $productAbstractAllowedQuantityWriter;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\AllowedProductQuantity\Persistence\AllowedProductQuantityEntityManagerInterface
      */
-    protected $allowedProductQuantityEntityManagerInterfaceMock;
+    protected $entityManagerMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\ProductAbstractTransfer
@@ -30,13 +25,18 @@ class ProductAbstractAllowedQuantityWriterTest extends Unit
     protected $allowedProductQuantityTransferMock;
 
     /**
+     * @var \FondOfSpryker\Zed\AllowedProductQuantity\Business\Model\ProductAbstractAllowedQuantityWriter
+     */
+    protected $productAbstractAllowedQuantityWriter;
+
+    /**
      * @return void
      */
     protected function _before(): void
     {
         parent::_before();
 
-        $this->allowedProductQuantityEntityManagerInterfaceMock = $this->getMockBuilder(AllowedProductQuantityEntityManagerInterface::class)
+        $this->entityManagerMock = $this->getMockBuilder(AllowedProductQuantityEntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -48,7 +48,7 @@ class ProductAbstractAllowedQuantityWriterTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->productAbstractAllowedQuantityWriter = new ProductAbstractAllowedQuantityWriter($this->allowedProductQuantityEntityManagerInterfaceMock);
+        $this->productAbstractAllowedQuantityWriter = new ProductAbstractAllowedQuantityWriter($this->entityManagerMock);
     }
 
     /**
@@ -56,23 +56,26 @@ class ProductAbstractAllowedQuantityWriterTest extends Unit
      */
     public function testPersist(): void
     {
-        $this->productAbstractTransferMock->expects($this->atLeastOnce())
+        $this->productAbstractTransferMock->expects(static::atLeastOnce())
             ->method('getAllowedQuantity')
             ->willReturn($this->allowedProductQuantityTransferMock);
 
-        $this->allowedProductQuantityTransferMock->expects($this->atLeastOnce())
+        $this->allowedProductQuantityTransferMock->expects(static::atLeastOnce())
             ->method('getIdProductAbstract')
             ->willReturn(1);
 
-        $this->allowedProductQuantityEntityManagerInterfaceMock->expects($this->atLeastOnce())
-            ->method('persist')
+        $this->entityManagerMock->expects(static::atLeastOnce())
+            ->method('persistAllowedProductQuantity')
             ->willReturn($this->allowedProductQuantityTransferMock);
 
-        $this->productAbstractTransferMock->expects($this->atLeastOnce())
+        $this->productAbstractTransferMock->expects(static::atLeastOnce())
             ->method('setAllowedQuantity')
             ->willReturn($this->productAbstractTransferMock);
 
-        $this->assertInstanceOf(ProductAbstractTransfer::class, $this->productAbstractAllowedQuantityWriter->persist($this->productAbstractTransferMock));
+        static::assertEquals(
+            $this->productAbstractTransferMock,
+            $this->productAbstractAllowedQuantityWriter->persist($this->productAbstractTransferMock),
+        );
     }
 
     /**
@@ -80,31 +83,34 @@ class ProductAbstractAllowedQuantityWriterTest extends Unit
      */
     public function testPersistIdProductAbstractNull(): void
     {
-        $this->productAbstractTransferMock->expects($this->atLeastOnce())
+        $this->productAbstractTransferMock->expects(static::atLeastOnce())
             ->method('getAllowedQuantity')
             ->willReturn($this->allowedProductQuantityTransferMock);
 
-        $this->allowedProductQuantityTransferMock->expects($this->atLeastOnce())
+        $this->allowedProductQuantityTransferMock->expects(static::atLeastOnce())
             ->method('getIdProductAbstract')
             ->willReturn(null);
 
-        $this->productAbstractTransferMock->expects($this->atLeast(2))
+        $this->productAbstractTransferMock->expects(static::atLeast(2))
             ->method('getIdProductAbstract')
             ->willReturn(1);
 
-        $this->allowedProductQuantityTransferMock->expects($this->atLeastOnce())
+        $this->allowedProductQuantityTransferMock->expects(static::atLeastOnce())
             ->method('setIdProductAbstract')
             ->willReturn($this->allowedProductQuantityTransferMock);
 
-        $this->allowedProductQuantityEntityManagerInterfaceMock->expects($this->atLeastOnce())
-            ->method('persist')
+        $this->entityManagerMock->expects(static::atLeastOnce())
+            ->method('persistAllowedProductQuantity')
             ->willReturn($this->allowedProductQuantityTransferMock);
 
-        $this->productAbstractTransferMock->expects($this->atLeastOnce())
+        $this->productAbstractTransferMock->expects(static::atLeastOnce())
             ->method('setAllowedQuantity')
             ->willReturn($this->productAbstractTransferMock);
 
-        $this->assertInstanceOf(ProductAbstractTransfer::class, $this->productAbstractAllowedQuantityWriter->persist($this->productAbstractTransferMock));
+        static::assertEquals(
+            $this->productAbstractTransferMock,
+            $this->productAbstractAllowedQuantityWriter->persist($this->productAbstractTransferMock),
+        );
     }
 
     /**
@@ -112,10 +118,13 @@ class ProductAbstractAllowedQuantityWriterTest extends Unit
      */
     public function testPersistProductAbstractTransferNull(): void
     {
-        $this->productAbstractTransferMock->expects($this->atLeastOnce())
+        $this->productAbstractTransferMock->expects(static::atLeastOnce())
             ->method('getAllowedQuantity')
             ->willReturn(null);
 
-        $this->assertInstanceOf(ProductAbstractTransfer::class, $this->productAbstractAllowedQuantityWriter->persist($this->productAbstractTransferMock));
+        static::assertEquals(
+            $this->productAbstractTransferMock,
+            $this->productAbstractAllowedQuantityWriter->persist($this->productAbstractTransferMock),
+        );
     }
 }

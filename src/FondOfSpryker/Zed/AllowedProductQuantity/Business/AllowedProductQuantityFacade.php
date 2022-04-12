@@ -32,4 +32,14 @@ class AllowedProductQuantityFacade extends AbstractFacade implements AllowedProd
     {
         return $this->getFactory()->createProductAbstractAllowedQuantityReader()->findByIdProductAbstract($productAbstractTransfer);
     }
+
+    /**
+     * @param array<string> $abstractSkus
+     *
+     * @return array<string, \Generated\Shared\Transfer\AllowedProductQuantityTransfer>
+     */
+    public function findGroupedProductAbstractAllowedQuantitiesByAbstractSkus(array $abstractSkus): array
+    {
+        return $this->getRepository()->findGroupedAllowedProductQuantitiesByAbstractSkus($abstractSkus);
+    }
 }

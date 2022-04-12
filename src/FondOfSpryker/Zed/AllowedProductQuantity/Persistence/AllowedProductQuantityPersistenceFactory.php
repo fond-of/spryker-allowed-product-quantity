@@ -25,7 +25,7 @@ class AllowedProductQuantityPersistenceFactory extends AbstractPersistenceFactor
     /**
      * @return \FondOfSpryker\Zed\AllowedProductQuantity\Persistence\Propel\Mapper\AllowedProductQuantityMapperInterface
      */
-    public function createPropelAllowedProductQuantityMapper(): AllowedProductQuantityMapperInterface
+    public function createAllowedProductQuantityMapper(): AllowedProductQuantityMapperInterface
     {
         return new AllowedProductQuantityMapper();
     }
