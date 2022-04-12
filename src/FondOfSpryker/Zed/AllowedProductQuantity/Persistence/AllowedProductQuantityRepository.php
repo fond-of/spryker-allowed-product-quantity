@@ -3,6 +3,7 @@
 namespace FondOfSpryker\Zed\AllowedProductQuantity\Persistence;
 
 use Generated\Shared\Transfer\AllowedProductQuantityTransfer;
+use Orm\Zed\Product\Persistence\Map\SpyProductTableMap;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
@@ -11,22 +12,54 @@ use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 class AllowedProductQuantityRepository extends AbstractRepository implements AllowedProductQuantityRepositoryInterface
 {
     /**
+     * @var string
+     */
+    public const VIRTUAL_COLUMN_SKU = 'sku';
+
+    /**
      * @param int $idProductAbstract
      *
      * @return \Generated\Shared\Transfer\AllowedProductQuantityTransfer|null
      */
-    public function findByIdProductAbstract(int $idProductAbstract): ?AllowedProductQuantityTransfer
+    public function findAllowedProductQuantityByIdProductAbstract(int $idProductAbstract): ?AllowedProductQuantityTransfer
     {
-        $fosAllowedProductQuantityQuery = $this->getFactory()->createAllowedProductQuantityQuery();
+        $query = $this->getFactory()
+            ->createAllowedProductQuantityQuery()
+            ->clear();
 
-        $fosAllowedProductQuantity = $fosAllowedProductQuantityQuery->filterByFkProductAbstract($idProductAbstract)
+        $entity = $query->filterByFkProductAbstract($idProductAbstract)
             ->findOne();
 
-        if ($fosAllowedProductQuantity === null) {
+        if ($entity === null) {
             return null;
         }
 
-        return $this->getFactory()->createPropelAllowedProductQuantityMapper()
-            ->mapEntityToTransfer($fosAllowedProductQuantity, new AllowedProductQuantityTransfer());
+        return $this->getFactory()
+            ->createAllowedProductQuantityMapper()
+            ->mapEntityToTransfer($entity);
+    }
+
+    /**
+     * @param array<string> $abstractSkus
+     *
+     * @return array<string, \Generated\Shared\Transfer\AllowedProductQuantityTransfer>
+     */
+    public function findGroupedAllowedProductQuantitiesByAbstractSkus(array $abstractSkus): array
+    {
+        $query = $this->getFactory()
+            ->createAllowedProductQuantityQuery()
+            ->clear();
+
+        $entities = $query->useProductQuery()
+                ->filterBySku_In($abstractSkus)
+            ->endUse()
+            ->withColumn(
+                SpyProductTableMap::COL_SKU,
+                static::VIRTUAL_COLUMN_SKU,
+            )->find();
+
+        return $this->getFactory()
+            ->createAllowedProductQuantityMapper()
+            ->mapEntityCollectionToGroupedTransfers($entities);
     }
 }

@@ -31,7 +31,7 @@ class ProductAbstractAllowedQuantityReader implements ProductAbstractAllowedQuan
         $productAbstractTransfer->requireIdProductAbstract();
 
         $allowedProductQuantityTransfer = $this->repository
-            ->findByIdProductAbstract($productAbstractTransfer->getIdProductAbstract());
+            ->findAllowedProductQuantityByIdProductAbstract($productAbstractTransfer->getIdProductAbstract());
 
         $allowedProductQuantityResponseTransfer = (new AllowedProductQuantityResponseTransfer())
             ->setIsSuccessful(true)

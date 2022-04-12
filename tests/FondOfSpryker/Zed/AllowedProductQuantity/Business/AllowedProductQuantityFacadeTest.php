@@ -5,20 +5,17 @@ namespace FondOfSpryker\Zed\AllowedProductQuantity\Business;
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\AllowedProductQuantity\Business\Model\ProductAbstractAllowedQuantityReaderInterface;
 use FondOfSpryker\Zed\AllowedProductQuantity\Business\Model\ProductAbstractAllowedQuantityWriterInterface;
+use FondOfSpryker\Zed\AllowedProductQuantity\Persistence\AllowedProductQuantityRepository;
 use Generated\Shared\Transfer\AllowedProductQuantityResponseTransfer;
+use Generated\Shared\Transfer\AllowedProductQuantityTransfer;
 use Generated\Shared\Transfer\ProductAbstractTransfer;
 
 class AllowedProductQuantityFacadeTest extends Unit
 {
     /**
-     * @var \FondOfSpryker\Zed\AllowedProductQuantity\Business\AllowedProductQuantityFacade
-     */
-    protected $allowedProductQuantityFacade;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\AllowedProductQuantity\Business\AllowedProductQuantityBusinessFactory
      */
-    protected $allowedProductQuantityBusinessFactoryMock;
+    protected $factoryMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\ProductAbstractTransfer
@@ -28,17 +25,32 @@ class AllowedProductQuantityFacadeTest extends Unit
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\AllowedProductQuantity\Business\Model\ProductAbstractAllowedQuantityWriterInterface
      */
-    protected $productAbstractAllowedQuantityWriterInterfaceMock;
+    protected $productAbstractAllowedQuantityWriterMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\AllowedProductQuantity\Business\Model\ProductAbstractAllowedQuantityReaderInterface
      */
-    protected $productAbstractAllowedQuantityReaderInterfaceMock;
+    protected $productAbstractAllowedQuantityReaderMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\AllowedProductQuantityResponseTransfer
      */
     protected $allowedProductQuantityResponseTransferMock;
+
+    /**
+     * @var \Generated\Shared\Transfer\AllowedProductQuantityTransfer|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $allowedProductQuantityTransferMock;
+
+    /**
+     * @var \FondOfSpryker\Zed\AllowedProductQuantity\Persistence\AllowedProductQuantityRepository|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $repositoryMock;
+
+    /**
+     * @var \FondOfSpryker\Zed\AllowedProductQuantity\Business\AllowedProductQuantityFacade
+     */
+    protected $allowedProductQuantityFacade;
 
     /**
      * @return void
@@ -47,7 +59,7 @@ class AllowedProductQuantityFacadeTest extends Unit
     {
         parent::_before();
 
-        $this->allowedProductQuantityBusinessFactoryMock = $this->getMockBuilder(AllowedProductQuantityBusinessFactory::class)
+        $this->factoryMock = $this->getMockBuilder(AllowedProductQuantityBusinessFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -55,11 +67,11 @@ class AllowedProductQuantityFacadeTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->productAbstractAllowedQuantityWriterInterfaceMock = $this->getMockBuilder(ProductAbstractAllowedQuantityWriterInterface::class)
+        $this->productAbstractAllowedQuantityWriterMock = $this->getMockBuilder(ProductAbstractAllowedQuantityWriterInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->productAbstractAllowedQuantityReaderInterfaceMock = $this->getMockBuilder(ProductAbstractAllowedQuantityReaderInterface::class)
+        $this->productAbstractAllowedQuantityReaderMock = $this->getMockBuilder(ProductAbstractAllowedQuantityReaderInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -67,8 +79,17 @@ class AllowedProductQuantityFacadeTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->allowedProductQuantityTransferMock = $this->getMockBuilder(AllowedProductQuantityTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->repositoryMock = $this->getMockBuilder(AllowedProductQuantityRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->allowedProductQuantityFacade = new AllowedProductQuantityFacade();
-        $this->allowedProductQuantityFacade->setFactory($this->allowedProductQuantityBusinessFactoryMock);
+        $this->allowedProductQuantityFacade->setFactory($this->factoryMock);
+        $this->allowedProductQuantityFacade->setRepository($this->repositoryMock);
     }
 
     /**
@@ -76,15 +97,20 @@ class AllowedProductQuantityFacadeTest extends Unit
      */
     public function testPersistProductAbstractAllowedQuantity(): void
     {
-        $this->allowedProductQuantityBusinessFactoryMock->expects($this->atLeastOnce())
+        $this->factoryMock->expects(static::atLeastOnce())
             ->method('createProductAbstractAllowedQuantityWriter')
-            ->willReturn($this->productAbstractAllowedQuantityWriterInterfaceMock);
+            ->willReturn($this->productAbstractAllowedQuantityWriterMock);
 
-        $this->productAbstractAllowedQuantityWriterInterfaceMock->expects($this->atLeastOnce())
+        $this->productAbstractAllowedQuantityWriterMock->expects(static::atLeastOnce())
             ->method('persist')
             ->willReturn($this->productAbstractTransferMock);
 
-        $this->assertInstanceOf(ProductAbstractTransfer::class, $this->allowedProductQuantityFacade->persistProductAbstractAllowedQuantity($this->productAbstractTransferMock));
+        static::assertEquals(
+            $this->productAbstractTransferMock,
+            $this->allowedProductQuantityFacade->persistProductAbstractAllowedQuantity(
+                $this->productAbstractTransferMock,
+            ),
+        );
     }
 
     /**
@@ -92,14 +118,38 @@ class AllowedProductQuantityFacadeTest extends Unit
      */
     public function testFindProductAbstractAllowedQuantity(): void
     {
-        $this->allowedProductQuantityBusinessFactoryMock->expects($this->atLeastOnce())
+        $this->factoryMock->expects(static::atLeastOnce())
             ->method('createProductAbstractAllowedQuantityReader')
-            ->willReturn($this->productAbstractAllowedQuantityReaderInterfaceMock);
+            ->willReturn($this->productAbstractAllowedQuantityReaderMock);
 
-        $this->productAbstractAllowedQuantityReaderInterfaceMock->expects($this->atLeastOnce())
+        $this->productAbstractAllowedQuantityReaderMock->expects(static::atLeastOnce())
             ->method('findByIdProductAbstract')
             ->willReturn($this->allowedProductQuantityResponseTransferMock);
 
-        $this->assertInstanceOf(AllowedProductQuantityResponseTransfer::class, $this->allowedProductQuantityFacade->findProductAbstractAllowedQuantity($this->productAbstractTransferMock));
+        static::assertEquals(
+            $this->allowedProductQuantityResponseTransferMock,
+            $this->allowedProductQuantityFacade->findProductAbstractAllowedQuantity($this->productAbstractTransferMock),
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testFindGroupedProductAbstractAllowedQuantitiesByAbstractSkus(): void
+    {
+        $abstractSkus = ['FOO-001-001', 'FOO-001-002'];
+        $groupedProductAbstractAllowedQuantities = [$abstractSkus[0] => $this->allowedProductQuantityTransferMock];
+
+        $this->repositoryMock->expects(static::atLeastOnce())
+            ->method('findGroupedAllowedProductQuantitiesByAbstractSkus')
+            ->with($abstractSkus)
+            ->willReturn($groupedProductAbstractAllowedQuantities);
+
+        static::assertEquals(
+            $groupedProductAbstractAllowedQuantities,
+            $this->allowedProductQuantityFacade->findGroupedProductAbstractAllowedQuantitiesByAbstractSkus(
+                $abstractSkus,
+            ),
+        );
     }
 }

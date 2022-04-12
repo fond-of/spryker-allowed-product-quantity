@@ -37,7 +37,7 @@ class ProductAbstractAllowedQuantityWriter implements ProductAbstractAllowedQuan
             $allowedProductQuantityTransfer->setIdProductAbstract($productAbstractTransfer->getIdProductAbstract());
         }
 
-        $allowedProductQuantityTransfer = $this->entityManager->persist($allowedProductQuantityTransfer);
+        $allowedProductQuantityTransfer = $this->entityManager->persistAllowedProductQuantity($allowedProductQuantityTransfer);
 
         return $productAbstractTransfer->setAllowedQuantity($allowedProductQuantityTransfer);
     }
