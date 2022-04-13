@@ -3,7 +3,7 @@
 namespace FondOfSpryker\Zed\AllowedProductQuantity\Persistence;
 
 use Generated\Shared\Transfer\AllowedProductQuantityTransfer;
-use Orm\Zed\Product\Persistence\Map\SpyProductTableMap;
+use Orm\Zed\Product\Persistence\Map\SpyProductAbstractTableMap;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
@@ -54,7 +54,7 @@ class AllowedProductQuantityRepository extends AbstractRepository implements All
                 ->filterBySku_In($abstractSkus)
             ->endUse()
             ->withColumn(
-                SpyProductTableMap::COL_SKU,
+                SpyProductAbstractTableMap::COL_SKU,
                 static::VIRTUAL_COLUMN_SKU,
             )->find();
 
