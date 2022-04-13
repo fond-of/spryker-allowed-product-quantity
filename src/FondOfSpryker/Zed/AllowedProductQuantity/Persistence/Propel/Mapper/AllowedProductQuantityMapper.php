@@ -16,9 +16,11 @@ class AllowedProductQuantityMapper implements AllowedProductQuantityMapperInterf
      */
     public function mapTransferToEntity(AllowedProductQuantityTransfer $transfer): FosAllowedProductQuantity
     {
-        return (new FosAllowedProductQuantity())
-            ->fromArray($transfer->toArray(false))
-            ->setFkProductAbstract($transfer->getIdProductAbstract());
+        $entity = new FosAllowedProductQuantity();
+
+        $entity->fromArray($transfer->toArray(false));
+
+        return $entity->setFkProductAbstract($transfer->getIdProductAbstract());
     }
 
     /**

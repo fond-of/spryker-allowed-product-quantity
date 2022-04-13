@@ -25,11 +25,12 @@ class AllowedProductQuantityEntityManager extends AbstractEntityManager implemen
 
         $entity = $query
             ->filterByIdAllowedProductQuantity($allowedProductQuantityTransfer->getIdAllowedProductQuantity())
-            ->findOneOrCreate()
-            ->fromArray($allowedProductQuantityTransfer->modifiedToArray())
-            ->setFkProductAbstract($allowedProductQuantityTransfer->getIdProductAbstract());
+            ->findOneOrCreate();
 
-        $entity->save();
+        $entity->fromArray($allowedProductQuantityTransfer->modifiedToArray());
+
+        $entity->setFkProductAbstract($allowedProductQuantityTransfer->getIdProductAbstract())
+            ->save();
 
         return $this->getFactory()
             ->createAllowedProductQuantityMapper()
